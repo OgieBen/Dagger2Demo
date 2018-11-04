@@ -1,0 +1,14 @@
+The annotationProcessor keyword, which is understood by the Android Gradle plugin,
+does not add these classes to the class path, they are used only for annotation processing,
+which prevents accidentally referencing them.
+
+
+Dagger provides a way for the fields in your activities, fragments,
+or services to be assigned references simply by annotating the fields with an @Inject
+annotation and calling an inject() method. Calling inject() will cause Dagger 2 to locate
+the singletons in the dependency graph to try to find a matching return type. If it finds one,
+it assigns the references to the respective fields.
+
+
+
+The injector class used in Dagger 2 is called a component.
