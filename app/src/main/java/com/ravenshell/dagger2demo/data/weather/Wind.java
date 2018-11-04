@@ -1,5 +1,8 @@
 package com.ravenshell.dagger2demo.data.weather;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Wind {
 
     @SerializedName("speed")
