@@ -1,5 +1,6 @@
 package com.ravenshell.dagger2demo.di.module;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.ravenshell.dagger2demo.Utils.Const;
 import com.ravenshell.dagger2demo.network.OpenWeatherInterface;
 
@@ -19,6 +20,7 @@ public class WeatherModule {
         return new Retrofit.Builder()
                 .baseUrl(Const.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 

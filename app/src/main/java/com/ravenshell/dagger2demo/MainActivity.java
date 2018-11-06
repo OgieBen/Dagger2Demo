@@ -5,10 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.ravenshell.dagger2demo.data.weather.WeatherData;
 import com.ravenshell.dagger2demo.network.OpenWeatherInterface;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +29,15 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         injectDependencies();
+
+        fetchWeatherData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onNext -> {
+                    Toast.makeText(this, "Data was fetch successfully", Toast.LENGTH_SHORT).show();
+                }, onError ->{
+                    Toast.makeText(this, "Data could not be fetched "+onError.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 
 
@@ -30,7 +45,16 @@ public class MainActivity extends AppCompatActivity {
         ((App) getApplication()).getWeatherComponent().inject(this);
     }
 
+    private Observable<WeatherData> fetchWeatherData(){
+        return openWeatherInterface
+                .getWeatherData(4.5, 4.2);
 
+    }
+
+
+    void  displayMsg(String msg){
+       Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
+   }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
